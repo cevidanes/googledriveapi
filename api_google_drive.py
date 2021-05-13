@@ -3,15 +3,16 @@ import requests
 import base64
 from flask import request, jsonify
 from gevent.pywsgi import WSGIServer
+from flask import Flask, jsonify, request
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
 def home():
-    query_parameters = request.args
-    url_criativo = query_parameters.get('urlcriativo')
+    json_data = request.get_json(force=True)
+    url_criativo = json_data['url_criativo']
+    tipo_midia = json_data['tipo_midia']
 
     if url_criativo ==None:
         dict_response = [{
@@ -54,14 +55,13 @@ def home():
         file_id = url_criativo.split('/')[5]
 
         file_id = url_criativo.split('/')[5]
-        destination = 'img.jpg'
+
+        destination = 'img' + tipo_midia
 
         download_file_from_google_drive(file_id, destination)
-
-
         with open("img.jpg", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
-        print(type(encoded_string))
+
         dict_response = [{
             "imagem": str(encoded_string)
         }]
