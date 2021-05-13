@@ -66,7 +66,7 @@ def home():
             "imagem": str(encoded_string)
         }
 
-    return jsonify(dict_response)
+    return str(encoded_string)
 
 
 app.debug = True
