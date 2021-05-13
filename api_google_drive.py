@@ -62,9 +62,9 @@ def home():
         with open("img.jpg", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
 
-        dict_response = [{
+        dict_response = {
             "imagem": str(encoded_string)
-        }]
+        }
 
     return jsonify(dict_response)
 
