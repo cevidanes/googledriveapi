@@ -2,6 +2,7 @@ import flask
 import requests
 import base64
 from flask import request, jsonify
+from gevent.pywsgi import WSGIServer
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -67,4 +68,7 @@ def home():
 
     return jsonify(dict_response)
 
-app.run(debug=True, host = '127.0.0.1', port = 8000)
+
+app.debug = True
+http_server = WSGIServer(('', 8000), app)
+http_server.serve_forever()
