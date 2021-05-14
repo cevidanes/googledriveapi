@@ -70,7 +70,6 @@ def home():
 
     return encoded_string
 
-app.run()
-#app.debug = True
-#http_server = WSGIServer(('', 8000), app)
-#http_server.serve_forever()
+app.debug = True
+http_server = WSGIServer(('', 8000), app)
+http_server.serve_forever()
