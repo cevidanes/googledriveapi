@@ -27,7 +27,7 @@ def home():
         return jsonify(dict_response)
 
     def submmit_image(contato, phone_number, base64Data):
-        URL = "	http://127.0.0.1:3333/sendFile"
+        URL = "	http://18.191.79.89:3333/sendFile"
 
         body_request = {
             "sessionName": "rdb",
@@ -84,12 +84,12 @@ def home():
         resp =submmit_image(contato, phone_number, encoded_string)
 
         dict_response = {
-            "imagem": str(encoded_string)
+            "imagem": str(resp)
         }
 
-    return resp
+    return dict_response
 
-
+#Devapp.run()
 app.debug = True
 http_server = WSGIServer(('', 8000), app)
 http_server.serve_forever()
