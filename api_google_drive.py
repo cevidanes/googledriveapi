@@ -57,18 +57,20 @@ def home():
         file_id = url_criativo.split('/')[5]
 
         destination = 'img' + tipo_midia
-
         download_file_from_google_drive(file_id, destination)
         with open("img.jpg", "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read())
+            binary_file_data = image_file.read()
+            base64_encoded_data = base64.b64encode(binary_file_data)
+            encoded_string = base64_encoded_data.decode('utf-8')
+
 
         dict_response = {
             "imagem": str(encoded_string)
         }
 
-    return str(encoded_string)
+    return encoded_string
 
-
-app.debug = True
-http_server = WSGIServer(('', 8000), app)
-http_server.serve_forever()
+app.run()
+#app.debug = True
+#http_server = WSGIServer(('', 8000), app)
+#http_server.serve_forever()
