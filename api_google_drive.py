@@ -8,18 +8,36 @@ from flask import Flask, jsonify, request
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
+
 @app.route('/', methods=['POST'])
 def home():
     json_data = request.get_json(force=True)
     url_criativo = json_data['url_criativo']
     tipo_midia = json_data['tipo_midia']
+    phone_number = json_data['phone_number']
+    contato = json_data['contato']
+    print(phone_number)
+    print(contato)
 
-    if url_criativo ==None:
+    if url_criativo == None:
         dict_response = [{
             "imagem": "Imagem nao encontrada"
         }]
 
         return jsonify(dict_response)
+
+    def submmit_image(contato, phone_number, base64Data):
+        URL = "	http://18.191.79.89:3333/sendFile"
+
+        body_request = {
+            "sessionName": "rdb",
+            "number": "5581999989702",
+            "base64Data": base64Data,
+            "fileName": "xx.jpg"
+        }
+        resp = requests.post(URL, json=body_request)
+
+        return resp
 
     def download_file_from_google_drive(id, destination):
         URL = "https://docs.google.com/uc?export=download"
@@ -63,12 +81,14 @@ def home():
             base64_encoded_data = base64.b64encode(binary_file_data)
             encoded_string = base64_encoded_data.decode('utf-8')
 
+        resp =submmit_image(contato, phone_number, encoded_string)
 
         dict_response = {
             "imagem": str(encoded_string)
         }
 
-    return encoded_string
+    return resp
+
 
 app.debug = True
 http_server = WSGIServer(('', 8000), app)
